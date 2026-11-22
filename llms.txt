@@ -1,0 +1,39 @@
+# GrexLabs — Free AI API Platform (no API key needed)
+
+> GrexLabs (https://www.grexlabs.in) is a free, keyless, OpenAI-compatible AI API gateway serving 314+ large language models from 25+ providers, plus a free web search API and a free image generation API. Free `:free` models need NO API key: no signup, no credit card, unlimited requests. Premium flagship models (GPT-6.2 Astra, Claude Fable 5.2, Gemini 4 Carbon, Grok 4.7) require a valid `sk-gl-` key; with no key or a wrong key only free `:free` models work.
+
+## Primary endpoints
+
+- [OpenAI chat completions](https://www.grexlabs.in/docs): POST https://www.grexlabs.in/api/v1/chat/completions — streaming SSE, tools, vision, no-cutout heartbeats
+- [Anthropic messages](https://www.grexlabs.in/docs): POST https://www.grexlabs.in/api/v1/messages — system prompts, content blocks, tool_use
+- [Google Gemini generateContent](https://www.grexlabs.in/docs): POST https://www.grexlabs.in/api/v1/generateContent — contents/parts, inline_data, ?alt=sse
+- [Models list](https://www.grexlabs.in/models): GET https://www.grexlabs.in/api/v1/models — all 314 models with context length and pricing
+- [Web search](https://www.grexlabs.in/search-playground): GET https://www.grexlabs.in/api/v1/search?q=... — free, keyless, India-first
+- [Image generation](https://www.grexlabs.in/docs): POST https://www.grexlabs.in/images/generations — free, keyless, OpenAI Images format
+
+## Free models (keyless)
+
+- Call right now with model `auto:free` — automatic best free model selection
+- 31 free IDs including openai/gpt-5.5:free, anthropic/claude-opus-5:free, google/gemini-4-pro:free, x_ai/grok-5:free, deepseek/deepseek-v4:free, nvidia/nemotron-3-ultra-550b-a55b:free
+- Full list: https://www.grexlabs.in/llm.txt and GET /api/v1/models
+
+## Flagship models (valid sk-gl- key required)
+
+- openai/gpt-6.2-astra (GPT-6.2 Astra), openai/gpt-6-astra + gpt-6-astra-fast/pro/ultra/mini/nano, openai/gpt-6, openai/gpt-6.1-sol, openai/gpt-6.1-terra
+- anthropic/claude-fable-5.2, anthropic/claude-opus-5.5, anthropic/claude-sonnet-5.5
+- google/gemini-4-carbon, google/gemini-4-argon, google/gemini-4-hydrogen, google/gemini-4-neon
+- x_ai/grok-4.7, deepseek/deepseek-v4-pro, alibaba/qwen3.8-max, zhipu/glm-5.3-deep, moonshotai/kimi-k3.1-pro, mistralai/mistral-large-4, manus/manus-agent
+
+## Guarantees
+
+- Streaming: 15s SSE heartbeats, 60s stall watchdog, guaranteed `data: [DONE]` — no mid-response cutout
+- Fast responses: multi-provider failover, 12s per-attempt budget
+- Search engines allowed in robots.txt: GPTBot, ClaudeBot, Claude-Web, PerplexityBot, Google-Extended, Bingbot
+
+## Optional metadata
+
+- Website: https://www.grexlabs.in
+- Docs: https://www.grexlabs.in/docs
+- Pricing: https://www.grexlabs.in/pricing
+- Playground: https://www.grexlabs.in/playground
+- llm.txt: https://www.grexlabs.in/llm.txt

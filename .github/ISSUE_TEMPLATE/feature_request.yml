@@ -1,0 +1,33 @@
+name: ✨ Feature request
+description: Suggest a new model, endpoint or capability for GrexLabs
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / use case
+      description: What are you trying to achieve with the free AI API?
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: e.g. add model X, support format Y, new free endpoint Z
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Type
+      options:
+        - New model (GPT / Claude / Gemini / open weights)
+        - New endpoint (OpenAI/Anthropic/Gemini compatible)
+        - Streaming / performance
+        - Search API
+        - Image generation
+        - Docs / SDK examples
+        - Other
+    validations:
+      required: true

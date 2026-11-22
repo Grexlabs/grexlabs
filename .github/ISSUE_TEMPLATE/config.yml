@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 🌐 GrexLabs Website
+    url: https://www.grexlabs.in
+    about: Live free AI API platform — 314+ models, no API key needed
+  - name: 📚 API Docs
+    url: https://www.grexlabs.in/docs
+    about: OpenAI / Anthropic / Gemini compatible endpoints, search & images
+  - name: 🤖 llm.txt (AEO/GEO)
+    url: https://www.grexlabs.in/llm.txt
+    about: Machine-readable knowledge file for AI crawlers

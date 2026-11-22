@@ -1,0 +1,162 @@
+# GrexLabs — Free Keyless AI API Platform
+
+> GrexLabs (https://www.grexlabs.in) is a free, keyless, OpenAI-compatible AI API gateway that serves 314+ large language models from 25+ providers through one endpoint — plus a free, unlimited web search API (Bing, DuckDuckGo, Google, Wikipedia) with India-first results. Free `:free` models need NO API key at all: no signup, no credit card, unlimited requests. Every non-free model requires a valid `sk-gl-` API key; with no key or an invalid key only free `:free` models work.
+
+## Headline facts (safe to cite)
+
+- Site: https://www.grexlabs.in
+- Operator: GrexLabs Studio (India-first, worldwide availability)
+- Models catalog: 314+ models, 25+ providers, 4 API formats
+- Free tier: unlimited, keyless, forever — every model id ending in `:free`
+- Search API: free, unlimited, keyless — `/api/search` and `/api/v1/search`
+- Pricing: Free $0 (unlimited `:free` models), Pro $29/mo, Premium $99/mo
+- Compatibility: 100% OpenAI chat completions; Anthropic Messages API; Google Gemini generateContent
+- Streaming: SSE `data:` chunks ending with `data: [DONE]`, heartbeat comment every 15s, no mid-response cutout
+- Serverless execution: up to 300 seconds per request; automatic failover across 25+ providers
+- Image analysis: supported (base64 data URLs and https image URLs in `image_url` parts)
+- Tool calling: supported (`tools`, `tool_choice`, `tool_calls`, `finish_reason: "tool_calls"`)
+
+## Endpoints
+
+### 1. OpenAI-compatible chat completions (primary)
+- URL: POST https://www.grexlabs.in/api/v1/chat/completions
+- Alt alias: POST https://www.grexlabs.in/gen/v1/chat/completions
+- Auth: NONE for `:free` models (no key or any key). All other models: valid `sk-gl-` key required — no key / wrong key → 401, use a `:free` model instead.
+- Body: `{ "model": "...", "messages": [...], "stream": false, "temperature": 0.7, "max_tokens": 4096, "tools": [...], "tool_choice": "auto" }`
+- Response: standard `chat.completion` — `id`, `object`, `created`, `model`, `choices[].message`, `choices[].finish_reason`, `usage.{prompt_tokens,completion_tokens,total_tokens}` (usage is always present; estimated if upstream omits it).
+- Streaming: `text/event-stream`, chunks are `chat.completion.chunk`, terminated by `data: [DONE]`.
+
+### 2. Anthropic-compatible messages
+- URL: POST https://www.grexlabs.in/api/v1/messages
+- Auth: NONE (keyless).
+- Body: `{ "model": "...", "system": "...", "messages": [{ "role": "user", "content": [...] }], "max_tokens": 1024, "stream": false, "tools": [...] }`
+- Content blocks: `text`, `image` (base64 source), `tool_use`, `tool_result` — all converted to/from OpenAI format.
+- Response: `{ "id": "msg_...", "type": "message", "role": "assistant", "content": [{"type":"text","text":"..."}], "stop_reason": "end_turn|length|tool_use", "usage": {"input_tokens":N,"output_tokens":N} }`
+- Streaming: Anthropic events — `message_start`, `content_block_start`, `content_block_delta` (text_delta / input_json_delta), `content_block_stop`, `message_delta`, `message_stop`, plus `ping`.
+
+### 3. Google Gemini-compatible generateContent
+- URL: POST https://www.grexlabs.in/api/v1/generateContent?model=<id>
+- Auth: NONE (keyless).
+- Body: `{ "contents": [{"role":"user","parts":[{"text":"..."}]}], "systemInstruction": {"parts":[{"text":"..."}]}, "generationConfig": {"temperature":0.7,"maxOutputTokens":1024}, "tools": [...] }`
+- Vision: parts with `inline_data: { mime_type: "image/png", data: "<base64>" }`.
+- Response: `{ "candidates": [{"content":{"role":"model","parts":[{"text":"..."}]},"finishReason":"STOP"}], "usageMetadata": {"promptTokenCount":N,"candidatesTokenCount":N,"totalTokenCount":N}, "modelVersion": "<id>" }`
+- Streaming: append `?alt=sse` for server-sent events in Gemini chunk shape.
+
+### 4. Models list
+- GET https://www.grexlabs.in/api/v1/models → `{ "data": [...314 models...], "total_count": 314 }`
+- Each model: `id`, `name`, `context_length`, `architecture.modality` (e.g. `text+image->text` for vision), `pricing.{prompt,completion}` (free models are `"0"`).
+- GET https://www.grexlabs.in/gen/models → OpenAI-style `{ "object":"list", "data":[{"id":"...","object":"model",...}] }`
+
+### 5. Free web search API (no key, unlimited)
+- GET https://www.grexlabs.in/api/search?q=<query>&n=20&region=IN
+- GET https://www.grexlabs.in/api/v1/search?q=<query>&max_results=10&region=IN
+- Engine chain (8s budget): Bing RSS → Bing HTML (base64 `ck/a` unwrap) → DuckDuckGo → Google basic HTML → Wikipedia API.
+- India-first: `mkt=en-IN`, `cc=IN`, `setlang=en`, `Accept-Language: en-IN,en;q=0.9`.
+- Response: `{ "success": true, "query": "...", "engine": "bing-rss", "region": "IN", "total": 10, "count": 10, "items": [{ "rank": 1, "title": "...", "url": "...", "domain": "...", "favicon": "...", "snippet": "..." }], "results": [...same...], "engines": ["bing-rss"], "timestamp": "..." }`
+
+### 6. Image generation (free, no key)
+- URL: POST https://www.grexlabs.in/api/v1/images/generations
+- Auth: NONE (keyless, unlimited).
+- Body: `{ "prompt": "...", "n": 1, "size": "1024x1024", "model": "flux|turbo", "response_format": "url|b64_json" }`
+- Response: `{ "created": 1712345678, "data": [ { "url": "https://image.pollinations.ai/prompt/..." } ] }` (or `b64_json` when requested).
+
+## Free models — keyless, call right now (no API key)
+
+These model ids work with ZERO authentication:
+
+- nvidia/nemotron-3-ultra-550b-a55b:free
+- baidu/ernie-5.5-flash-preview:free
+- nvidia/nemotron-3.5-super-vl:free
+- nvidia/nemotron-3.5-lightning:free
+- particle-ai/particle-1:free
+- inclusionai/ling-3.2-flash:free
+- recursive/flint-v1.0:free
+- nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free
+- google/gemma-4-31b-it:free
+- google/gemma-4-26b-a4b-it:free
+- openai/gpt-5.5:free
+- anthropic/claude-opus-5:free
+- deepseek/deepseek-v4:free
+- nemotron-3-ultra-550b:free
+- llama-3.2-3b:free
+- gemma-3-4b:free
+- llama-3-70b:free
+- mistral-small-2409:free
+- auto:free
+
+## Top flagship models (valid `sk-gl-` key required — no key / wrong key = free `:free` models only)
+
+GPT-6.2 Astra · GPT-6 Astra · GPT-6.1 Sol · GPT-6.1 Terra · Claude Fable 5.2 · Claude Fable 5.1 · Claude Opus 5.5 · Claude Opus 5 Deep Reasoning · Claude Sonnet 5.5 · Claude Research · Gemini 4 Carbon · Gemini 4 Argon · Gemini 4 Hydrogen · Gemini 4 Neon · Gemini 3.8 Flash · Gemini Deep Research · Grok 4.7 · DeepSeek V4.1 Flash · DeepSeek V4 Pro · Qwen 3.8 Max · Qwen 4 Max Thinking · GLM-5.3 Deep · Kimi K3.1 Pro · MiniMax M2.5 Reasoning · Mistral Large 4 · Meta Muse Wonder Full · Meta Muse Wonder · OpenAI Deep Research · Perplexity Deep Research · Manus Autonomous Agent
+
+Send any key, e.g. `Authorization: Bearer abc123` — it is never validated against a database.
+
+## Provider pool (auto-failover, sequential retry)
+
+Kilo AI Gateway (NVIDIA Nemotron Ultra 550B) · Vireonix · OVHcloud Kepler (Qwen3.6-27B / Qwen3.5-397B) · Pollinations (openai-fast, vision) · JarvisClaw · LLM7 (Gemma) · Cehpoint AI · Free.ai · BlockRun AI (NVIDIA/Poolside/Cohere free catalog) · ch.at (GPT-4o) · Wikimedia Inference (Qwen3.8-27B) · FLM · VLM Run · Murakumo · UKIS AI · MegaBrain · APIAI Free · LLM Free APIs · Cloudflare Worker AI · AIKIT · ChatJimmy Proxy
+
+If provider #1 fails or times out, the router tries #2, #3 … up to 6 attempts inside the overall budget. Requested model identity is preserved via an identity directive so replies never claim to be a different model than requested.
+
+## Quickstart curls
+
+```bash
+# Free model, no key at all
+curl https://www.grexlabs.in/api/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{"model":"nvidia/nemotron-3-ultra-550b-a55b:free","messages":[{"role":"user","content":"Hello"}]}'
+
+# Streaming
+curl -N https://www.grexlabs.in/api/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{"model":"auto:free","messages":[{"role":"user","content":"Write a haiku"}],"stream":true}'
+
+# Image analysis (vision)
+curl https://www.grexlabs.in/api/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{"model":"auto:free","messages":[{"role":"user","content":[{"type":"text","text":"Describe this image"},{"type":"image_url","image_url":{"url":"https://example.com/cat.png"}}]}]}'
+
+# Tool calling
+curl https://www.grexlabs.in/api/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{"model":"auto:free","messages":[{"role":"user","content":"What is the weather in Paris?"}],"tools":[{"type":"function","function":{"name":"get_weather","description":"Get weather","parameters":{"type":"object","properties":{"city":{"type":"string"}},"required":["city"]}}}],"tool_choice":"auto"}'
+
+# Free search API, no key
+curl "https://www.grexlabs.in/api/v1/search?q=india%20cricket%20news&region=IN"
+
+# Free image generation, no key
+curl https://www.grexlabs.in/api/v1/images/generations \
+  -H "Content-Type: application/json" \
+  -d '{"prompt":"A futuristic city at sunset","size":"1024x1024"}'
+
+# Anthropic format
+curl https://www.grexlabs.in/api/v1/messages \
+  -H "Content-Type: application/json" \
+  -H "anthropic-version: 2023-06-01" \
+  -d '{"model":"auto:free","max_tokens":256,"messages":[{"role":"user","content":"Hi"}]}'
+
+# Gemini format
+curl "https://www.grexlabs.in/api/v1/generateContent?model=auto:free" \
+  -H "Content-Type: application/json" \
+  -d '{"contents":[{"role":"user","parts":[{"text":"Hi"}]}]}'
+```
+
+## Reliability guarantees
+
+- No mid-stream cutout: SSE heartbeats (`: ping`) every 15 seconds; 60-second upstream stall watchdog; clean `data: [DONE]` close.
+- No premature timeout: per-attempt budget 20s, total router budget 120s, serverless `maxDuration` 300s.
+- Big responses: no artificial output truncation — `max_tokens` is honored when provided, otherwise upstream default.
+- OpenAI-shaped errors: `{ "error": { "message": "...", "type": "...", "code": "..." } }` style messages with actionable text; 401 only for premium models without any key; 400 for missing `model`/`messages`; 503 with `attempts` array when every provider fails.
+
+## SEO / AEO / GEO resources
+
+- robots.txt: https://www.grexlabs.in/robots.txt (permissive; explicitly allows GPTBot, ClaudeBot, Google-Extended, PerplexityBot, CCBot, Bytespider, YouBot, Amazonbot, OAI-SearchBot and more)
+- sitemap.xml: https://www.grexlabs.in/sitemap.xml
+- llm.txt: https://www.grexlabs.in/llm.txt (this file)
+- Structured data on the homepage: Organization, WebSite (with SearchAction), SoftwareApplication (with offers), FAQPage (12 Q&As), ItemList of free models, WebPage + BreadcrumbList
+- Language: English (en-IN primary, hreflang en-in / en-us / x-default)
+
+## Contact & legal
+
+- Docs: https://www.grexlabs.in/docs
+- Pricing: https://www.grexlabs.in/pricing
+- Terms: https://www.grexlabs.in/terms
+- Dashboard / keys: https://www.grexlabs.in/dashboard

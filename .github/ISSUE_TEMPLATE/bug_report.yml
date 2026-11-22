@@ -1,0 +1,51 @@
+name: 🐞 Bug report
+description: Report a bug in the GrexLabs free AI API (errors, streaming, search, images)
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve **GrexLabs** — the free, keyless, OpenAI-compatible AI API (314+ models).
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Chat completions (/api/v1/chat/completions)
+        - Anthropic messages (/api/v1/messages)
+        - Gemini generateContent (/api/v1/generateContent)
+        - Streaming (SSE / cutout)
+        - Free models (auto:free / :free)
+        - Web search API
+        - Image generation API
+        - Playground / website
+        - Docs
+    validations:
+      required: true
+  - type: input
+    id: model
+    attributes:
+      label: Model ID
+      placeholder: "auto:free or openai/gpt-6.2-astra"
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Actual vs expected behavior, error messages, request body (remove keys!)
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction steps / curl
+      render: bash
+      placeholder: |
+        curl https://www.grexlabs.in/api/v1/chat/completions -H "Content-Type: application/json" -d '{...}'
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      placeholder: "Node 20 / Python 3.12 / openai-python 1.x / region"
