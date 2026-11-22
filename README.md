@@ -65,7 +65,6 @@
 - [Architecture](#-architecture)
 - [GrexLabs vs Others](#-grexlabs-vs-others)
 - [SEO · AEO · GEO Files](#-seo--aeo--geo-files)
-- [Deploy Your Own Instance](#-deploy-your-own-instance)
 - [FAQ](#-faq)
 - [License](#-license)
 
@@ -409,24 +408,6 @@ GrexLabs ships first-class files for **search engines, answer engines and AI cra
 | This repo | `llm.txt`, `llms.txt`, `robots.txt`, `sitemap.xml` mirrors for citation |
 
 **Target queries this project is optimized for:** *free AI API*, *no API key LLM*, *OpenAI-compatible API*, *free GPT-6.2 Astra API*, *free Claude API*, *keyless LLM gateway*, *free web search API India*, *free image generation API*, *Anthropic Messages compatible API*, *Gemini generateContent compatible*.
-
----
-
-## 🚢 Deploy Your Own Instance
-
-```bash
-git clone https://github.com/Grexlabs/grexlabs.git
-cd grexlabs
-# Point vercel.json rewrites at your own api/ functions, then:
-npx vercel --prod
-```
-
-Requirements: Node 18+, Vercel Hobby is enough (≤12 serverless functions), optional Supabase env vars for key accounting:
-
-```
-SUPABASE_URL=...
-SUPABASE_SECRET_KEY=...
-```
 
 ---
 
