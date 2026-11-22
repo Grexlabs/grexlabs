@@ -9,7 +9,7 @@
 - [Google Gemini generateContent](https://www.grexlabs.in/docs): POST https://www.grexlabs.in/api/v1/generateContent — contents/parts, inline_data, ?alt=sse
 - [Models list](https://www.grexlabs.in/models): GET https://www.grexlabs.in/api/v1/models — all 314 models with context length and pricing
 - [Web search](https://www.grexlabs.in/search-playground): GET https://www.grexlabs.in/api/v1/search?q=... — free, keyless, India-first
-- [Image generation](https://www.grexlabs.in/docs): POST https://www.grexlabs.in/images/generations — free, keyless, OpenAI Images format
+- [Image generation](https://www.grexlabs.in/docs): POST https://www.grexlabs.in/api/v1/images/generations — free, keyless, text-to-image + image-to-image (`image_url` / `image_b64`), OpenAI Images format, multi-provider failover (AI DRAW → freeapi → a0 → seinari)
 
 ## Free models (keyless)
 

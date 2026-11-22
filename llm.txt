@@ -54,11 +54,14 @@
 - India-first: `mkt=en-IN`, `cc=IN`, `setlang=en`, `Accept-Language: en-IN,en;q=0.9`.
 - Response: `{ "success": true, "query": "...", "engine": "bing-rss", "region": "IN", "total": 10, "count": 10, "items": [{ "rank": 1, "title": "...", "url": "...", "domain": "...", "favicon": "...", "snippet": "..." }], "results": [...same...], "engines": ["bing-rss"], "timestamp": "..." }`
 
-### 6. Image generation (free, no key)
+### 6. Image generation (free, no key) — text-to-image + image-to-image
 - URL: POST https://www.grexlabs.in/api/v1/images/generations
+- List models: GET https://www.grexlabs.in/api/v1/images/generations
 - Auth: NONE (keyless, unlimited).
-- Body: `{ "prompt": "...", "n": 1, "size": "1024x1024", "model": "flux|turbo", "response_format": "url|b64_json" }`
-- Response: `{ "created": 1712345678, "data": [ { "url": "https://image.pollinations.ai/prompt/..." } ] }` (or `b64_json` when requested).
+- Body (t2i): `{ "prompt": "...", "n": 1, "size": "1024x1024", "model": "auto|flux|flux-dev|turbo|fast|quality", "response_format": "url|b64_json" }`
+- Body (i2i): same + `"image_url": "https://public-source.png"` (AI DRAW) or `"image_b64": "<base64>"` (freeapi Flux Kontext).
+- Models: auto (AI DRAW → freeapi → a0 → seinari failover), flux (AI DRAW), flux-dev (freeapi), turbo (a0), fast (seinari), quality (AI DRAW).
+- Response: `{ "created": 1712345678, "provider": "ai-draw", "data": [ { "url": "https://gitee-ai.su.bcebos.com/v1/public/temp/....png" } ] }` (or `b64_json` when requested).
 
 ## Free models — keyless, call right now (no API key)
 

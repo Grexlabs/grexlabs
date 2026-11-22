@@ -83,7 +83,7 @@
 | 🌊 **No-cutout streaming** | SSE with 15 s heartbeats, 60 s stall watchdog, guaranteed `data: [DONE]` — the response never dies mid-answer |
 | ⚡ **Fast responses** | Multi-provider auto-failover, 12 s per-attempt budget, first tokens typically in 1–3 s |
 | 🌏 **Web search API** | Bing → DuckDuckGo → Google → Wikipedia chain, **India-first** (`region=IN`), no key, unlimited |
-| 🎨 **Image generation** | OpenAI-compatible `/v1/images/generations`, **free & keyless**, up to 4 images, `url` or `b64_json` |
+| 🎨 **Image generation** | OpenAI-compatible `/v1/images/generations`, **free & keyless**, t2i + **image-to-image**, multi-provider failover, `url` or `b64_json` |
 | 🛠 **Tools, vision, thinking** | Function calling, image analysis, reasoning modes, temperature/max_tokens control |
 | 📈 **Always up** | 25+ upstream providers with sequential retry — if one fails, the next takes over |
 
@@ -184,7 +184,7 @@ curl https://www.grexlabs.in/api/v1/chat/completions \
 | `GET` | `/gen/models` | OpenAI list | none | OpenAI-style model list |
 | `GET` | `/api/v1/search` | JSON | **none** | Web search (India-first), `q`, `max_results`, `region` |
 | `POST` | `/api/search` | JSON | **none** | Legacy search endpoint |
-| `POST` | `/api/v1/images/generations` | **OpenAI Images** | **none** | Free image generation (`prompt`, `n`, `size`, `response_format`) |
+| `POST` | `/api/v1/images/generations` | **OpenAI Images** | **none** | Free image generation t2i + i2i (`prompt`, `image_url`/`image_b64`, `n`, `size`, `model`, `response_format`) |
 | `POST` | `/api/v1/moderate` | JSON | none | Content safety check |
 
 Full request/response schemas: **https://www.grexlabs.in/docs**
@@ -293,20 +293,38 @@ curl "https://www.grexlabs.in/api/v1/search?q=india%20cricket%20news&max_results
 
 ---
 
-## 🎨 Image Generation API — Free
+## 🎨 Image Generation API — Free (t2i + i2i)
 
 ```bash
+# Text-to-image
 curl https://www.grexlabs.in/api/v1/images/generations \
   -H "Content-Type: application/json" \
-  -d '{"prompt":"A futuristic city at sunset, cinematic","size":"1024x1024","n":1}'
+  -d '{"prompt":"A futuristic city at sunset, cinematic","size":"1024x1024","model":"auto","n":1}'
+```
+
+```bash
+# Image-to-image (public source URL → AI DRAW)
+curl https://www.grexlabs.in/api/v1/images/generations \
+  -H "Content-Type: application/json" \
+  -d '{"prompt":"make the sky sunset orange, keep everything else","image_url":"https://example.com/source.png","size":"1024x1024"}'
+```
+
+```bash
+# Image-to-image (base64 → freeapi Flux Kontext)
+curl https://www.grexlabs.in/api/v1/images/generations \
+  -H "Content-Type: application/json" \
+  -d '{"prompt":"add a hat","image_b64":"<base64>","model":"flux-dev"}'
 ```
 
 ```json
-{ "created": 1712345678, "data": [ { "url": "https://image.pollinations.ai/prompt/..." } ] }
+{ "created": 1712345678, "provider": "ai-draw", "data": [ { "url": "https://gitee-ai.su.bcebos.com/v1/public/temp/....png" } ] }
 ```
 
 - **Free & keyless** — works for everyone, instantly
-- Params: `prompt` (required), `n` (1–4), `size` (`1024x1024`, `1792x1024`, …), `model` (`flux` | `turbo`), `response_format` (`url` | `b64_json`)
+- **Multi-provider fallback**: AI DRAW → freeapi → a0 → seinari (auto failover)
+- Params: `prompt` (required), `n` (1–4), `size`, `model` (`auto|flux|flux-dev|turbo|fast|quality`), `response_format` (`url|b64_json`)
+- **Image-to-image**: `image_url` (public URL) or `image_b64` (raw base64)
+- List models: `GET /api/v1/images/generations`
 
 ---
 
@@ -358,7 +376,7 @@ Client (any language / any OpenAI SDK)
 ```
 
 - **Search**: independent chain — Bing RSS → Bing HTML → DuckDuckGo → Google → Wikipedia
-- **Images**: Pollinations.ai (`flux` / `turbo`), proxied and normalized to OpenAI shape
+- **Images**: multi-provider chain (AI DRAW → freeapi → a0 → seinari), t2i + i2i, normalized to OpenAI Images shape
 
 ---
 
