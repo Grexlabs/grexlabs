@@ -5,19 +5,27 @@
 </p>
 
 <p align="center">
-  <a href="https://www.grexlabs.in"><img src="https://img.shields.io/badge/%F0%9F%9A%80-live-22c55e?style=flat-square&logo=vercel&logoColor=white" alt="Live"></a>
-  <a href="https://www.grexlabs.in/models"><img src="https://img.shields.io/badge/models-314%2B-3b82f6?style=flat-square&logo=openai&logoColor=white" alt="314+ models"></a>
-  <a href="https://www.grexlabs.in/docs"><img src="https://img.shields.io/badge/API-keyless%20%7C%20free-22d3ee?style=flat-square&logo=keybase&logoColor=black" alt="Keyless free API"></a>
-  <a href="https://www.grexlabs.in/docs"><img src="https://img.shields.io/badge/format-OpenAI%20%7C%20Anthropic%20%7C%20Gemini-a78bfa?style=flat-square&logo=google&logoColor=white" alt="OpenAI Anthropic Gemini compatible"></a>
-  <a href="https://www.grexlabs.in/docs"><img src="https://img.shields.io/badge/streaming-SSE%20no%20cutout-f59e0b?style=flat-square&logo=socketdotio&logoColor=white" alt="Streaming SSE no cutout"></a>
-  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="MIT License"></a>
-  <a href="https://www.grexlabs.in/llm.txt"><img src="https://img.shields.io/badge/AEO%20%7C%20GEO-llm.txt%20%7C%20llms.txt-purple?style=flat-square" alt="AEO GEO llm.txt"></a>
+  <img src="https://img.shields.io/badge/%F0%9F%9A%80-LIVE-grexlabs.in-22c55e?style=for-the-badge&logo=vercel&logoColor=white" alt="Live">
+  <img src="https://img.shields.io/badge/314%2B-MODELS-3b82f6?style=for-the-badge&logo=openai&logoColor=white" alt="314+ models">
+  <img src="https://img.shields.io/badge/NO-API%20KEY-keyless%20free-22d3ee?style=for-the-badge&logo=keybase&logoColor=black" alt="Keyless free API">
+  <img src="https://img.shields.io/badge/OpenAI%20%7C%20Anthropic%20%7C%20Gemini-compatible-a78bfa?style=for-the-badge&logo=google&logoColor=white" alt="OpenAI Anthropic Gemini compatible">
+  <img src="https://img.shields.io/badge/SSE-streaming%20no%20cutout-f59e0b?style=for-the-badge&logo=socketdotio&logoColor=white" alt="Streaming SSE no cutout">
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue?style=for-the-badge" alt="MIT License"></a>
+  <img src="https://img.shields.io/badge/AEO%20%7C%20GEO-llm.txt%20%7C%20llms.txt-purple?style=for-the-badge" alt="AEO GEO llm.txt">
 </p>
 
-<h3 align="center">The free, keyless, OpenAI-compatible AI API platform — 314+ LLMs, web search & image generation</h3>
+<h1 align="center">
+  <img src="./assets/icon.svg" width="36" height="36" alt="GrexLabs">
+  GrexLabs — Free AI API
+</h1>
 
 <p align="center">
-  <b>🔑 No API key for free models</b> · <b>⚡ Instant responses</b> · <b>🌊 SSE streaming with zero cutout</b> · <b>🌏 India-first search</b> · <b>🎨 Free image generation</b>
+  <b>The free, keyless, OpenAI-compatible AI API platform</b><br>
+  314+ LLMs · Web search · Image generation · Streaming without cutout
+</p>
+
+<p align="center">
+  <b>🔑 No API key for free models</b> · <b>⚡ Instant responses</b> · <b>🌊 SSE with zero cutout</b> · <b>🌏 India-first search</b> · <b>🎨 Free images</b>
 </p>
 
 <p align="center">
@@ -26,7 +34,17 @@
   <a href="https://www.grexlabs.in/playground"><strong>🎮 Playground</strong></a> ·
   <a href="https://www.grexlabs.in/models"><strong>🧠 Models</strong></a> ·
   <a href="https://www.grexlabs.in/pricing"><strong>💎 Pricing</strong></a> ·
-  <a href="https://www.grexlabs.in/llm.txt"><strong>🤖 llm.txt</strong></a>
+  <a href="https://www.grexlabs.in/llm.txt"><strong>🤖 llm.txt</strong></a> ·
+  <a href="https://grexlabs.github.io"><strong>✨ Landing</strong></a>
+</p>
+
+<p align="center">
+  <a href="https://www.grexlabs.in/playground">
+    <img src="https://img.shields.io/badge/▶_TRY_IT_NOW-open%20playground-22c55e?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Try the playground">
+  </a>
+  <a href="https://github.com/Grexlabs/grexlabs">
+    <img src="https://img.shields.io/badge/★_STAR_this_repo-github-181717?style=for-the-badge&logo=github&logoColor=white" alt="Star on GitHub">
+  </a>
 </p>
 
 ---
@@ -146,7 +164,6 @@ curl https://www.grexlabs.in/api/v1/chat/completions \
 | **No key** | ✅ works, unlimited | ❌ `401` |
 | **Wrong / placeholder key** | ✅ works | ❌ `401` |
 | **Valid `sk-gl-…` key** | ✅ works | ✅ works |
-| **`mk-mahabbat` (owner bypass)** | ✅ works | ✅ works |
 
 - Free model IDs always end with **`:free`** — or just use **`auto:free`** for automatic best-free-model selection.
 - Issued keys look like `sk-gl-1712345678-a1b2c3` (dashboard: https://www.grexlabs.in/dashboard).
@@ -240,6 +257,10 @@ Top premium models (valid `sk-gl-` key required):
 ---
 
 ## 🌊 Streaming — No Cutout, Ever
+
+<p align="center">
+  <img src="./assets/stream-demo.gif" alt="GrexLabs SSE streaming demo — heartbeats, watchdog, guaranteed data: [DONE]" width="100%" max-width="720">
+</p>
 
 GrexLabs streaming is engineered so a response **never stops mid-answer**:
 
