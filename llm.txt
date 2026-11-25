@@ -62,6 +62,7 @@
 - Body (i2i): same + `"image_url": "https://public-source.png"` (AI DRAW) or `"image_b64": "<base64>"` (freeapi Flux Kontext).
 - Models: auto (AI DRAW → freeapi → a0 → seinari failover), flux (AI DRAW), flux-dev (freeapi), turbo (a0), fast (seinari), quality (AI DRAW).
 - Response: `{ "created": 1712345678, "provider": "ai-draw", "data": [ { "url": "https://gitee-ai.su.bcebos.com/v1/public/temp/....png" } ] }` (or `b64_json` when requested).
+- i2i providers: ai-draw-i2i (public URL), freeapi-i2i (base64).
 
 ## Free models — keyless, call right now (no API key)
 
@@ -125,10 +126,15 @@ curl https://www.grexlabs.in/api/v1/chat/completions \
 # Free search API, no key
 curl "https://www.grexlabs.in/api/v1/search?q=india%20cricket%20news&region=IN"
 
-# Free image generation, no key
+# Free image generation, no key (text-to-image)
 curl https://www.grexlabs.in/api/v1/images/generations \
   -H "Content-Type: application/json" \
-  -d '{"prompt":"A futuristic city at sunset","size":"1024x1024"}'
+  -d '{"prompt":"A futuristic city at sunset","size":"1024x1024","model":"auto"}'
+
+# Free image-to-image, no key
+curl https://www.grexlabs.in/api/v1/images/generations \
+  -H "Content-Type: application/json" \
+  -d '{"prompt":"make the sky sunset orange","image_url":"https://example.com/source.png"}'
 
 # Anthropic format
 curl https://www.grexlabs.in/api/v1/messages \
